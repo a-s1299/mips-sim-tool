@@ -19,7 +19,7 @@ public class SignExtender {
         String sign_extended;
 
         if ( not_extended.length() == 16 ) // will only be length 16 if 1 is the most significant digit
-            sign_extended = "111111111111111" + not_extended; // 1-less, reserved for sign bit
+            sign_extended = "111111111111111" + not_extended; // 1-less(than 16), reserved for sign bit
         else
             sign_extended = "000000000000000" + not_extended;
 
