@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.LoadActivity">
+
+    <Spinner
+        android:id="@+id/immediate_spinner"
+        android:layout_width="128dp"
+        android:layout_height="32dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/address_spinner"
+        app:layout_constraintEnd_toStartOf="@+id/immediate_txtview"
+        app:layout_constraintTop_toBottomOf="@+id/funct_txtview2" />
+
+    <TextView
+        android:id="@+id/funct_txtview2"
+        android:layout_width="128dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="4dp"
+        android:text="funct:"
+        android:textAlignment="textStart"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/immediate_spinner"
+        app:layout_constraintEnd_toStartOf="@+id/funct_txtview"
+        app:layout_constraintTop_toBottomOf="@+id/shamt_spinner" />
+
+    <TextView
+        android:id="@+id/opcode_txtview"
+        android:layout_width="128dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="64dp"
+        android:text="opcode"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_prompt" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="128dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="64dp"
+        android:text="address"
+        android:textAlignment="center"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/immediate_txtview" />
+
+    <TextView
+        android:id="@+id/immediate_txtview"
+        android:layout_width="191dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="4dp"
+        android:text="immediate"
+        android:textAlignment="center"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/textView8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/funct_txtview" />
+
+    <TextView
+        android:id="@+id/shamt_txtview"
+        android:layout_width="128dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="64dp"
+        android:text="00000"
+        android:textAlignment="center"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/funct_txtview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rd_txtview" />
+
+    <TextView
+        android:id="@+id/funct_txtview"
+        android:layout_width="128dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="64dp"
+        android:text="funct"
+        android:textAlignment="center"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/immediate_txtview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/shamt_txtview" />
+
+    <TextView
+        android:id="@+id/rt_txtview"
+        android:layout_width="128dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="64dp"
+        android:text="rt"
+        android:textAlignment="center"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/rd_txtview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rs_txtview" />
+
+    <TextView
+        android:id="@+id/rs_txtview"
+        android:layout_width="128dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="64dp"
+        android:text="rs"
+        android:textAlignment="center"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/rt_txtview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/opcode_txtview" />
+
+    <TextView
+        android:id="@+id/rd_txtview"
+        android:layout_width="128dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="64dp"
+        android:text="rd"
+        android:textAlignment="center"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/shamt_txtview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rt_txtview" />
+
+    <Spinner
+        android:id="@+id/opcode_spinner"
+        android:layout_width="128dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toStartOf="@+id/opcode_txtview"
+        app:layout_constraintTop_toBottomOf="@+id/top_prompt" />
+
+    <Spinner
+        android:id="@+id/address_spinner"
+        android:layout_width="128dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="4dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/process_button"
+        app:layout_constraintEnd_toStartOf="@+id/textView8"
+        app:layout_constraintTop_toBottomOf="@+id/immediate_spinner" />
+
+    <Spinner
+        android:id="@+id/rd_spinner"
+        android:layout_width="128dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="4dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/shamt_spinner"
+        app:layout_constraintEnd_toStartOf="@+id/rd_txtview"
+        app:layout_constraintTop_toBottomOf="@+id/rt_spinner" />
+
+    <Spinner
+        android:id="@+id/rt_spinner"
+        android:layout_width="128dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="4dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/rd_spinner"
+        app:layout_constraintEnd_toStartOf="@+id/rt_txtview"
+        app:layout_constraintTop_toBottomOf="@+id/rs_spinner" />
+
+    <Spinner
+        android:id="@+id/rs_spinner"
+        android:layout_width="128dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="4dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/rt_spinner"
+        app:layout_constraintEnd_toStartOf="@+id/rs_txtview"
+        app:layout_constraintTop_toBottomOf="@+id/opcode_spinner" />
+
+    <Spinner
+        android:id="@+id/shamt_spinner"
+        android:layout_width="128dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="4dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/funct_txtview2"
+        app:layout_constraintEnd_toStartOf="@+id/shamt_txtview"
+        app:layout_constraintTop_toBottomOf="@+id/rd_spinner" />
+
+    <TextView
+        android:id="@+id/top_prompt"
+        android:layout_width="274dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="69dp"
+        android:layout_marginTop="37dp"
+        android:layout_marginEnd="69dp"
+        android:layout_marginBottom="78dp"
+        android:fontFamily="monospace"
+        android:text="Use this tool to create your instruction set"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/opcode_spinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/process_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:text="process"
+        app:layout_constraintEnd_toStartOf="@+id/add_instruction_button"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/address_spinner" />
+
+    <EditText
+        android:id="@+id/full_instruction"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:layout_marginTop="372dp"
+        android:clickable="false"
+        android:contextClickable="false"
+        android:ems="10"
+        android:focusable="false"
+        android:inputType="phone"
+        android:longClickable="false"
+        android:text="00000000-00000000-00000000-00000000"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/remove_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="remove"
+        app:layout_constraintEnd_toStartOf="@+id/run_button"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/add_instruction_button"
+        app:layout_constraintTop_toBottomOf="@+id/full_instruction" />
+
+    <Button
+        android:id="@+id/add_instruction_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="add"
+        app:layout_constraintEnd_toStartOf="@+id/remove_button"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/process_button"
+        app:layout_constraintTop_toBottomOf="@+id/full_instruction" />
+
+    <Button
+        android:id="@+id/run_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" run "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/remove_button"
+        app:layout_constraintTop_toBottomOf="@+id/full_instruction" />
+
+    <TextView
+        android:id="@+id/user_instruction_set_txtview"
+        android:layout_width="248dp"
+        android:layout_height="212dp"
+        android:layout_marginTop="48dp"
+        android:text="\n"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/full_instruction" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
