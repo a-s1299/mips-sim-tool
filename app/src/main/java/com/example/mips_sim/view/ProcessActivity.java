@@ -57,10 +57,15 @@ public class ProcessActivity extends AppCompatActivity implements View.OnClickLi
         initCPU();
         checkPreloadDirective();
         initComponents();
-        processInstruction();
 
-        user1 = new UserRuntime();
-        makeToast(user1.translateInstruction(extender));
+        if (!processInstruction()) {
+            user1 = new UserRuntime();
+            makeToast(user1.translateInstruction(extender));
+        } else {
+
+        }
+
+
     }
 
     @Override
@@ -88,7 +93,7 @@ public class ProcessActivity extends AppCompatActivity implements View.OnClickLi
                 break;
 
             case R.id.check_button:
-                user1.setSelection( (regDstSwitch.isChecked()) ? 1 : 0,
+                user1.setUserGuess( (regDstSwitch.isChecked()) ? 1 : 0,
                         (regWriteToggle.isChecked()) ? 1 : 0,
                         (aluSrcSwitch.isChecked()) ? 1 : 0,
                         (memWriteToggle.isChecked()) ? 1 : 0,
@@ -112,8 +117,14 @@ public class ProcessActivity extends AppCompatActivity implements View.OnClickLi
                         Handler handler = new Handler();
                         handler.postDelayed(() -> pcSrcSwitch.setChecked(false), 2000);
                     }
-                    resetMovables();
-                    PC.updatePC();
+                    try {
+                        resetMovables();
+                        PC.updatePC();
+                    } catch (Exception err) {
+                        makeToast("Error:" + err.getMessage() + "\nPlease re-evaluate your code");
+                        finish();
+                    }
+
 
                     if (!processInstruction()) {
                         makeToast(user1.translateInstruction(extender));
@@ -146,11 +157,15 @@ public class ProcessActivity extends AppCompatActivity implements View.OnClickLi
                 @Override
                 public void run() {
 
-                    if (UserRuntime.getStatus() == UserRuntime.getSelection())
+                    if (UserRuntime.getStatus() == UserRuntime.getStageSelection())
                         UserRuntime.levelUp();
                     finish();
                 }
             }, 3000);
+        } catch (Exception err) {
+
+            makeToast("Logic error has occurred\n\nProgram exiting");
+            finish();
         }
         return programEnd;
     }
@@ -164,14 +179,21 @@ public class ProcessActivity extends AppCompatActivity implements View.OnClickLi
 
     private void checkPreloadDirective() {
 
-        if (UserRuntime.getSelection() == 0) {
+        if (UserRuntime.getStageSelection() == 0) {
 
 
-        } else if (UserRuntime.getSelection() == 1) {
+        } else if (UserRuntime.getStageSelection() == 1) {
             regFile.preloadReg(9, "101");
 
         } else {
-            // check user objective state
+            switch (UserRuntime.getObjective()) {
+
+                case 0:
+                    regFile.preloadReg(8, "10");
+                    dataMem.preloadMem(4,"101");
+                case 1:
+                case 2:
+            }
 
         }
     }

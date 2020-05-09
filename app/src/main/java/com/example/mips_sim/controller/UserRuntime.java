@@ -4,7 +4,8 @@ public class UserRuntime {
 
     private static Boolean isCorrect = false;
     private static Integer status = 2; // << ----------------- FIX TO ZERO AFTER
-    private static Integer selection = 0;
+    private static Integer stageSelection = 0;
+    private static Integer objective = 0;
 
     private Integer regDst;
     private Integer regWrite;
@@ -28,14 +29,13 @@ public class UserRuntime {
 
     public UserRuntime() {
 
-
     }
 
     public static String[] getInstructionSet() {
 
         String[] correctInstructionSet = new String[]{};
 
-        switch (selection) {
+        switch (stageSelection) {
             case 0:
                 correctInstructionSet = FIRST_INSTRUCTION_SET;
                 break;
@@ -69,17 +69,27 @@ public class UserRuntime {
         ++status;
     }
 
-    public static Integer getSelection() {
+    public static Integer getStageSelection() {
 
-        return selection;
+        return stageSelection;
     }
 
     public static void setStageSelection(Integer newSelection) {
 
-        selection = newSelection;
+        stageSelection = newSelection;
     }
 
-    public void setSelection(Integer regDstRef, Integer regWriteRef, Integer ALUSrcRef, Integer memWriteRef, Integer memReadRef, Integer memToRegRef, Integer branchGateRef) {
+    public static Integer getObjective() {
+
+        return objective;
+    }
+
+    public static void setObjective(Integer newObjective) {
+
+        objective = newObjective;
+    }
+
+    public void setUserGuess(Integer regDstRef, Integer regWriteRef, Integer ALUSrcRef, Integer memWriteRef, Integer memReadRef, Integer memToRegRef, Integer branchGateRef) {
 
         regDst = regDstRef;
         regWrite = regWriteRef;
@@ -109,19 +119,19 @@ public class UserRuntime {
             case 0:
                 switch ( DecoderWires.getFunct() ) {
                     case 0b100000: // add
-                        theInstructionTranslation = "add" + " $" + DecoderWires.getRs() + " $" + DecoderWires.getRt() + " $" + DecoderWires.getRd();
+                        theInstructionTranslation = "add" + " $" + DecoderWires.getRd() + " $" + DecoderWires.getRs() + " $" + DecoderWires.getRt();
                         break;
                     case 0b100010: // sub
-                        theInstructionTranslation = "sub" + " $" + DecoderWires.getRs() + " $" + DecoderWires.getRt() + " $" + DecoderWires.getRd();
+                        theInstructionTranslation = "sub" + " $" + DecoderWires.getRd() + " $" + DecoderWires.getRs() + " $" + DecoderWires.getRt();
                         break;
                     case 0b100100: // and
-                        theInstructionTranslation = "and" + " $" + DecoderWires.getRs() + " $" + DecoderWires.getRt() + " $" + DecoderWires.getRd();
+                        theInstructionTranslation = "and" + " $" + DecoderWires.getRd() + " $" + DecoderWires.getRs() + " $" + DecoderWires.getRt();
                         break;
                     case 0b100101: // or
-                        theInstructionTranslation = "or" + " $" + DecoderWires.getRs() + " $" + DecoderWires.getRt() + " $" + DecoderWires.getRd();
+                        theInstructionTranslation = "or" + " $" + DecoderWires.getRd() + " $" + DecoderWires.getRs() + " $" + DecoderWires.getRt();
                         break;
                     case 0b101010: // set-on-less-than (slt)
-                        theInstructionTranslation = "slt" + " $" + DecoderWires.getRs() + " $" + DecoderWires.getRt() + " $" + DecoderWires.getRd();
+                        theInstructionTranslation = "slt" + " $" + DecoderWires.getRd() + " $" + DecoderWires.getRs() + " $" + DecoderWires.getRt();
                 }
                 break;
             case 8:
@@ -155,19 +165,19 @@ public class UserRuntime {
             case "000000":
                 switch ( funct ) {
                     case "100000": // add
-                        theInstructionTranslation = "add" + " $" + Integer.parseInt(rs, 2) + " $" + Integer.parseInt(rt, 2) + " $" + Integer.parseInt(rd, 2);
+                        theInstructionTranslation = "add" + " $" + Integer.parseInt(rd, 2) + " $" + Integer.parseInt(rs, 2) + " $" + Integer.parseInt(rt, 2);
                         break;
                     case "100010": // sub
-                        theInstructionTranslation = "sub" + " $" + Integer.parseInt(rs, 2) + " $" + Integer.parseInt(rt, 2) + " $" + Integer.parseInt(rd, 2);
+                        theInstructionTranslation = "sub" + " $" + Integer.parseInt(rd, 2) + " $" + Integer.parseInt(rs, 2) + " $" + Integer.parseInt(rt, 2);
                         break;
                     case "100100": // and
-                        theInstructionTranslation = "and" + " $" + Integer.parseInt(rs, 2) + " $" + Integer.parseInt(rt, 2) + " $" + Integer.parseInt(rd, 2);
+                        theInstructionTranslation = "and" + " $" + Integer.parseInt(rd, 2) + " $" + Integer.parseInt(rs, 2) + " $" + Integer.parseInt(rt, 2);
                         break;
                     case "100101": // or
-                        theInstructionTranslation = "or" + " $" + Integer.parseInt(rs, 2) + " $" + Integer.parseInt(rt, 2) + " $" + Integer.parseInt(rd, 2);
+                        theInstructionTranslation = "or" + " $" + Integer.parseInt(rd, 2) + " $" + Integer.parseInt(rs, 2) + " $" + Integer.parseInt(rt, 2);
                         break;
                     case "101010": // set-on-less-than (slt)
-                        theInstructionTranslation = "slt" + " $" + Integer.parseInt(rs, 2) + " $" + Integer.parseInt(rt, 2) + " $" + Integer.parseInt(rd, 2);
+                        theInstructionTranslation = "slt" + " $" + Integer.parseInt(rd, 2) + " $" + Integer.parseInt(rs, 2) + " $" + Integer.parseInt(rt, 2);
                 }
                 break;
             case "001000":

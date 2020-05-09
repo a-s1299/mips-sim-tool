@@ -61,9 +61,9 @@ public class DataMemory {
         Vector<String> allOccupiedMemory = new Vector<>();
         Integer iter = 0;
 
-        for (String eachSlot : memory){
-            if (eachSlot != "")
-                allOccupiedMemory.add( "@0x" + Integer.toHexString(iter) + " = 0b" + eachSlot + "\n");
+        for (String eachMem : memory){
+            if (eachMem != "")
+                allOccupiedMemory.add( "@0x" + Integer.toHexString(iter) + Integer.parseInt(eachMem, 2) + "\n" );
 
             ++iter;
         }

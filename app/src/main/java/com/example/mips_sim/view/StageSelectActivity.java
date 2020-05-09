@@ -39,7 +39,7 @@ public class StageSelectActivity  extends AppCompatActivity implements View.OnCl
 
             case R.id.challenge2_button:
                 UserRuntime.setStageSelection(1);
-                if (UserRuntime.getSelection() > UserRuntime.getStatus())
+                if (UserRuntime.getStageSelection() > UserRuntime.getStatus())
                     stockFailResponse();
                 else
                     startProcessActivity(0);
@@ -47,7 +47,7 @@ public class StageSelectActivity  extends AppCompatActivity implements View.OnCl
 
             case R.id.challenge3_button:
                 UserRuntime.setStageSelection(2);
-                if (UserRuntime.getSelection() > UserRuntime.getStatus())
+                if (UserRuntime.getStageSelection() > UserRuntime.getStatus())
                     stockFailResponse();
                 else
                     startProcessActivity(1);

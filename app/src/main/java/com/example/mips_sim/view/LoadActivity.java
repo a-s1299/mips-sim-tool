@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,7 +31,7 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
 
     // GUI dependencies
     private final String[] INSTRUCTION_LIST = {"add", "sub", "and", "or", "slt", "addi", "lw", "sw", "beq", "bne"};
-    private final String[] REGISTER_LIST = {"$t0", "$t1", "$t2", "$t3", "$t4", "$t5", "$t6", "$t7", "$t8", "$t9", "$a0", "$a1", "$a2", "$a3", "$v0"};
+    private final String[] REGISTER_LIST = {"$8", "$9", "$10", "$11", "$12", "$13", "$14", "$15", "$24", "$25", "$4", "$5", "$6", "$7", "$2"};
 
     private final Map<String, String> OPCODE_MAP = Stream.of(new Object[][]{
             {"add", "000000"}, {"sub", "000000"}, {"and", "000000"},
@@ -45,11 +46,11 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
     }).collect(Collectors.toMap(p -> (String)p[0], p -> (String)p[1]));
 
     private final Map<String, String> REGISTER_MAP = Stream.of(new Object[][]{
-            {"$t0", "01000"}, {"$t1", "01001"}, {"$t2", "01010"},
-            {"$t3", "01011"}, {"$t4", "01100"}, {"$t5", "01101"},
-            {"$t6", "01110"}, {"$t7", "01111"}, {"$t8", "11000"},
-            {"$t9", "11001"}, {"$a0", "00100"}, {"$a1", "00101"},
-            {"$a2", "00110"}, {"$a3", "00111"}, {"$v0", "00010"},
+            {"$8", "01000"}, {"$9", "01001"}, {"$10", "01010"},
+            {"$11", "01011"}, {"$12", "01100"}, {"$13", "01101"},
+            {"$14", "01110"}, {"$15", "01111"}, {"$24", "11000"},
+            {"$25", "11001"}, {"$4", "00100"}, {"$5", "00101"},
+            {"$6", "00110"}, {"$7", "00111"}, {"$2", "00010"},
     }).collect(Collectors.toMap(p -> (String)p[0], p -> (String) p[1]));
 
     private Spinner opcodeSpinner,
@@ -58,7 +59,7 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
             rdSpinner,
             shamtSpinner,
             immediateSpinner;
-    //private Spinner address_spinner;
+    //private Spinner addressSpinner;
 
     private TextView opcodeTxtView,
             rsTxtView,
@@ -67,12 +68,16 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
             shamtTxtView,
             functFirstTxtView,
             functTxtView,
-            immediateTxtView;
+            immediateTxtView,
+            objectivePromptTxtView,
+            preloadTxtView;
 
     private Button processButton,
             addButton,
             removeButton,
-            runButton;
+            runButton,
+            previousButton,
+            nextButton;
 
     private EditText instructionBinaryEditTxt;
     private TextView userInstructionSetTxtView;
@@ -84,6 +89,9 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
     private Integer iterator = 0;
     private String instructionBinaryString;
     private String placeHolder;
+    private Integer objectiveCounter = 0;
+    private final Integer TOTAL_OBJECTIVES = 3;
+    private final String INSTRUCTION_DEFAULT = "00000000-00000000-00000000-00000000";
 
 
     @Override
@@ -92,6 +100,18 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.load_instruction);
 
         init();
+        setObjective(objectiveCounter);
+
+    }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+
+        userInstructionSet = new String[4];
+        userInstructionSetTxtView.setText("");
+        iterator = 0;
 
     }
 
@@ -99,6 +119,13 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
 
         switch (v.getId()) {
+            case R.id.previous_button:
+                setObjective( ((--objectiveCounter %TOTAL_OBJECTIVES)+TOTAL_OBJECTIVES)%TOTAL_OBJECTIVES );
+                break;
+
+            case R.id.next_button:
+                setObjective( ((++objectiveCounter %TOTAL_OBJECTIVES)+TOTAL_OBJECTIVES)%TOTAL_OBJECTIVES );
+                break;
 
             case R.id.process_button:
                 switch (opcodeSpinner.getSelectedItem().toString()) {
@@ -135,7 +162,7 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.add_instruction_button:
-                if (instructionBinaryString != null) {
+                if ( !instructionBinaryEditTxt.getText().toString().equals(INSTRUCTION_DEFAULT) ) {
                     userInstructionSet[iterator++] = instructionBinaryString.substring(24,32);
                     userInstructionSet[iterator++] = instructionBinaryString.substring(16,24);
                     userInstructionSet[iterator++] = instructionBinaryString.substring(8,16);
@@ -151,6 +178,7 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
                                     immediateTxtView.getText().toString() );
                     userInstructionSetTxtView.setText(placeHolder);
                     increaseSet();
+                    resetSelection();
                 } else {
                     makeToast("Please create an instruction");
                 }
@@ -188,6 +216,10 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
         switch (parent.getId())
         {
             case R.id.opcode_spinner:
+                if (pos == 5 && UserRuntime.getObjective() == 0) {
+                    resetSelection();
+                    makeToast("Selection locked for current objective");
+                }
                 resetVisibility();
                 switch (pos) {
                     case 0: case 1: case 2: case 3: case 4:
@@ -240,8 +272,10 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
         rdSpinner = findViewById(R.id.rd_spinner);
         shamtSpinner = findViewById(R.id.shamt_spinner);
         immediateSpinner = findViewById(R.id.immediate_spinner);
-        //address_spinner = findViewById(R.id.address_spinner);
+        //addressSpinner = findViewById(R.id.address_spinner);
 
+        objectivePromptTxtView = findViewById(R.id.objective_prompt_txtview);
+        preloadTxtView = findViewById(R.id.preload_txtview);
         opcodeTxtView = findViewById(R.id.opcode_txtview);
         rsTxtView = findViewById(R.id.rs_txtview);
         rtTxtView = findViewById(R.id.rt_txtview);
@@ -253,12 +287,15 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
 
         instructionBinaryEditTxt = findViewById(R.id.full_instruction);
 
+        previousButton = findViewById(R.id.previous_button);
+        nextButton = findViewById(R.id.next_button);
         processButton = findViewById(R.id.process_button);
         addButton = findViewById(R.id.add_instruction_button);
         removeButton = findViewById(R.id.remove_button);
         runButton = findViewById(R.id.run_button);
 
         userInstructionSetTxtView = findViewById(R.id.user_instruction_set_txtview);
+        userInstructionSetTxtView.setMovementMethod(new ScrollingMovementMethod());
 
         populateSpinnersAndListeners();
     }
@@ -296,10 +333,59 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
         immediateSpinner.setSelection(100);
         immediateSpinner.setOnItemSelectedListener(this);
 
+        previousButton.setOnClickListener(this);
+        nextButton.setOnClickListener(this);
         processButton.setOnClickListener(this);
         addButton.setOnClickListener(this);
         removeButton.setOnClickListener(this);
         runButton.setOnClickListener(this);
+    }
+
+    private void setObjective(Integer objectiveID) {
+
+        String promptPlaceholder;
+        String preloadPlaceholder = "Pre-loads:\n\n";
+
+        switch (objectiveID) {
+
+            case 0:
+                UserRuntime.setObjective(objectiveID);
+                promptPlaceholder = "Using numbers 5 & 2, fill memory locations 1-5 with values matching the location";
+                objectivePromptTxtView.setText(promptPlaceholder);
+                preloadPlaceholder = preloadPlaceholder + "Reg:\n$8 = 2\n\nMem:\n@0x04 = 5";
+                preloadTxtView.setText(preloadPlaceholder);
+                break;
+
+            case 1:
+                UserRuntime.setObjective(objectiveID);
+                promptPlaceholder = "placeholder for 2";
+                objectivePromptTxtView.setText(promptPlaceholder);
+                preloadTxtView.setText(preloadPlaceholder);
+                break;
+
+            case 2:
+                UserRuntime.setObjective(objectiveID);
+                promptPlaceholder = "placeholder for 3";
+                objectivePromptTxtView.setText(promptPlaceholder);
+                preloadTxtView.setText(preloadPlaceholder);
+                break;
+
+            default:
+                preloadPlaceholder = "setObjective() case miss";
+                preloadTxtView.setText(preloadPlaceholder + objectiveID);
+        }
+    }
+
+    private void resetSelection() {
+
+        opcodeSpinner.setSelection(0);
+        rsSpinner.setSelection(0);
+        rtSpinner.setSelection(0);
+        rdSpinner.setSelection(0);
+        //shamtSpinner.setSelection(0);
+        immediateSpinner.setSelection(100);
+        // also missing addressSpinner
+        instructionBinaryEditTxt.setText(INSTRUCTION_DEFAULT);
     }
 
     private void resetVisibility() {

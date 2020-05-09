@@ -76,7 +76,7 @@ public class RegisterFile {
 
         for (String eachReg : registers){
             if (eachReg != "0")
-                allOccupiedRegisters.add( "$" + iter + " = " + String.valueOf( Integer.parseInt( eachReg,2 ) ) + "\n");
+                allOccupiedRegisters.add( "$" + iter + " = " + Integer.parseInt(eachReg, 2) + "\n");
 
             ++iter;
         }
