@@ -1,11 +1,15 @@
 package com.example.mips_sim.controller;
 
+import com.example.mips_sim.model.DataMemory;
+import com.example.mips_sim.model.RegisterFile;
+
 public class UserRuntime {
 
     private static Boolean isCorrect = false;
-    private static Integer status = 2; // << ----------------- FIX TO ZERO AFTER
+    private static Integer status = 2; // << ----------------- FIX TO ZERO ON RELEASE
     private static Integer stageSelection = 0;
     private static Integer objective = 0;
+    public static Boolean[] objectiveStatus;
 
     private Integer regDst;
     private Integer regWrite;
@@ -201,6 +205,32 @@ public class UserRuntime {
         theInstructionTranslation += "\n";
 
         return theInstructionTranslation;
+    }
+
+    public Boolean checkObjectiveState(RegisterFile regFile, DataMemory dataMem, Integer objectiveCase) {
+
+        Boolean isEqual = false;
+
+        switch (objectiveCase) {
+
+            case 0:
+//                if ( dataMem.checkMem(2, "10") ) // debugging purposes (single 'sw' w/defaults will complete
+//                    isEqual = true;
+                if ( dataMem.checkMem(1, "1")
+                    && dataMem.checkMem(2, "10")
+                    && dataMem.checkMem(3, "11")
+                    && dataMem.checkMem(4, "100")
+                    && dataMem.checkMem(5, "101"))
+                    isEqual = true;
+                break;
+
+            case 1:
+                break;
+
+            case 2:
+        }
+
+        return isEqual;
     }
 
 }

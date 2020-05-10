@@ -3,6 +3,7 @@ package com.example.mips_sim.view;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Gravity;
@@ -90,7 +91,7 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
     private String instructionBinaryString;
     private String placeHolder;
     private Integer objectiveCounter = 0;
-    private final Integer TOTAL_OBJECTIVES = 3;
+    private static final Integer TOTAL_OBJECTIVES = 3;
     private final String INSTRUCTION_DEFAULT = "00000000-00000000-00000000-00000000";
 
 
@@ -99,9 +100,9 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.load_instruction);
 
+        checkUserState();
         init();
-        setObjective(objectiveCounter);
-
+        setUserObjective(objectiveCounter);
     }
 
     @Override
@@ -113,6 +114,7 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
         userInstructionSetTxtView.setText("");
         iterator = 0;
 
+        toStrikeOrNotToStrike();
     }
 
     @Override
@@ -120,11 +122,12 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
 
         switch (v.getId()) {
             case R.id.previous_button:
-                setObjective( ((--objectiveCounter %TOTAL_OBJECTIVES)+TOTAL_OBJECTIVES)%TOTAL_OBJECTIVES );
+                setUserObjective( ((--objectiveCounter %TOTAL_OBJECTIVES)+TOTAL_OBJECTIVES)%TOTAL_OBJECTIVES );
+
                 break;
 
             case R.id.next_button:
-                setObjective( ((++objectiveCounter %TOTAL_OBJECTIVES)+TOTAL_OBJECTIVES)%TOTAL_OBJECTIVES );
+                setUserObjective( ((++objectiveCounter %TOTAL_OBJECTIVES)+TOTAL_OBJECTIVES)%TOTAL_OBJECTIVES );
                 break;
 
             case R.id.process_button:
@@ -264,6 +267,15 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private void checkUserState() {
+
+        if (UserRuntime.objectiveStatus == null) {
+            UserRuntime.objectiveStatus = new Boolean[TOTAL_OBJECTIVES];
+            for (int i = 0; i < TOTAL_OBJECTIVES; ++i)
+                UserRuntime.objectiveStatus[i] = false;
+        }
+    }
+
     private void init() {
 
         opcodeSpinner = findViewById(R.id.opcode_spinner);
@@ -341,7 +353,7 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
         runButton.setOnClickListener(this);
     }
 
-    private void setObjective(Integer objectiveID) {
+    private void setUserObjective(Integer objectiveID) {
 
         String promptPlaceholder;
         String preloadPlaceholder = "Pre-loads:\n\n";
@@ -352,7 +364,7 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
                 UserRuntime.setObjective(objectiveID);
                 promptPlaceholder = "Using numbers 5 & 2, fill memory locations 1-5 with values matching the location";
                 objectivePromptTxtView.setText(promptPlaceholder);
-                preloadPlaceholder = preloadPlaceholder + "Reg:\n$8 = 2\n\nMem:\n@0x04 = 5";
+                preloadPlaceholder = preloadPlaceholder + "Reg:\n$8 = 2\n\nMem:\n0x04 = 5";
                 preloadTxtView.setText(preloadPlaceholder);
                 break;
 
@@ -371,9 +383,10 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             default:
-                preloadPlaceholder = "setObjective() case miss";
+                preloadPlaceholder = "setUserObjective() case miss";
                 preloadTxtView.setText(preloadPlaceholder + objectiveID);
         }
+        toStrikeOrNotToStrike();
     }
 
     private void resetSelection() {
@@ -454,6 +467,19 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
         toast = Toast.makeText(this, toDisplay, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         toast.show();
+    }
+
+    private void toStrikeOrNotToStrike() {
+
+        if ( UserRuntime.objectiveStatus[((objectiveCounter %TOTAL_OBJECTIVES)+TOTAL_OBJECTIVES)%TOTAL_OBJECTIVES] ) {
+            objectivePromptTxtView.setPaintFlags(objectivePromptTxtView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            preloadTxtView.setPaintFlags(preloadTxtView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        }
+        else {
+            objectivePromptTxtView.setPaintFlags(objectivePromptTxtView.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+            preloadTxtView.setPaintFlags(preloadTxtView.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+        }
+
     }
 
 }

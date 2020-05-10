@@ -48,6 +48,7 @@ public class ProcessActivity extends AppCompatActivity implements View.OnClickLi
     // User dependencies
     private UserRuntime user1;
     private Toast toast;
+    // here, i forgot why i put "here"
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,11 +62,10 @@ public class ProcessActivity extends AppCompatActivity implements View.OnClickLi
         if (!processInstruction()) {
             user1 = new UserRuntime();
             makeToast(user1.translateInstruction(extender));
+
         } else {
 
         }
-
-
     }
 
     @Override
@@ -120,6 +120,10 @@ public class ProcessActivity extends AppCompatActivity implements View.OnClickLi
                     try {
                         resetMovables();
                         PC.updatePC();
+                        if (checkObjectiveState()) {
+                            UserRuntime.objectiveStatus[UserRuntime.getObjective()] = true;
+                            makeToast("Objective Complete!");
+                        }
                     } catch (Exception err) {
                         makeToast("Error:" + err.getMessage() + "\nPlease re-evaluate your code");
                         finish();
@@ -149,6 +153,8 @@ public class ProcessActivity extends AppCompatActivity implements View.OnClickLi
         } catch (ArrayIndexOutOfBoundsException err) {
 
             makeToast("Program completed successfully!");
+            if ( !UserRuntime.objectiveStatus[UserRuntime.getObjective()] && UserRuntime.getStageSelection() == 2 )
+                makeToast("Failed objective");
             // countdown to previous
             programEnd = true;
             Timer timer = new Timer();
@@ -164,7 +170,9 @@ public class ProcessActivity extends AppCompatActivity implements View.OnClickLi
             }, 3000);
         } catch (Exception err) {
 
-            makeToast("Logic error has occurred\n\nProgram exiting");
+            makeToast("ACCESS ERROR");
+            makeToast("Please check instruction set");
+
             finish();
         }
         return programEnd;
@@ -191,11 +199,14 @@ public class ProcessActivity extends AppCompatActivity implements View.OnClickLi
                 case 0:
                     regFile.preloadReg(8, "10");
                     dataMem.preloadMem(4,"101");
+
                 case 1:
+                    break;
+
                 case 2:
             }
-
         }
+
     }
 
     private static void createAllObjects() {
@@ -298,5 +309,10 @@ public class ProcessActivity extends AppCompatActivity implements View.OnClickLi
         toast = Toast.makeText(this, toDisplay, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         toast.show();
+    }
+
+    private Boolean checkObjectiveState() {
+
+        return user1.checkObjectiveState(regFile, dataMem, UserRuntime.getObjective());
     }
 }

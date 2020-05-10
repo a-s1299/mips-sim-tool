@@ -92,4 +92,9 @@ public class RegisterFile {
         registers[regNum] = regVal;
     }
 
+    public Boolean checkReg(Integer index, String query) {
+
+        return ( registers[index].equals(query) );
+    }
+
 }

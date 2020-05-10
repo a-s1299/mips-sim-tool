@@ -63,7 +63,7 @@ public class DataMemory {
 
         for (String eachMem : memory){
             if (eachMem != "")
-                allOccupiedMemory.add( "@0x" + Integer.toHexString(iter) + Integer.parseInt(eachMem, 2) + "\n" );
+                allOccupiedMemory.add( "0x" + Integer.toHexString(iter) + " = " + Integer.parseInt(eachMem, 2) + "\n" );
 
             ++iter;
         }
@@ -77,5 +77,10 @@ public class DataMemory {
     public void preloadMem(Integer memNum, String memVal) {
 
         memory[memNum] = memVal;
+    }
+
+    public Boolean checkMem(Integer index, String query) {
+
+        return ( memory[index].equals(query) );
     }
 }
