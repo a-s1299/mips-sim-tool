@@ -5,7 +5,7 @@
 >
 > However, i couldn't resist adding some gamification to the project....
 
-![Intro](start-screen.png =281x568)
+<img src="start-screen.png" alt="itnro" width="281" height="568"/>
 
 > The application was created using compileSdkVersion 29.
 > The targetSdkVersion is 29, but minSdkVersion 24.
