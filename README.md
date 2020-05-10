@@ -7,13 +7,13 @@
 
  <div class="row">
   <div class="column">
-    <img src="start-screen.png" alt="start" width="281" height="568">
+    <img src="start-screen.png" alt="start" style="float: right;" width="281" height="568">
   </div>
   <div class="column">
-    <img src="load-screen.png" alt="load" width="281" height="568">
+    <img src="load-screen.png" alt="load" style="float: right;" width="281" height="568">
   </div>
   <div class="column">
-    <img src="process-screen.png" alt="process" width="281" height="568">
+    <img src="process-screen.png" alt="process" style="float: right;" width="281" height="568">
   </div>
 </div> 
 
