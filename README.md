@@ -5,7 +5,17 @@
 >
 > However, i couldn't resist adding some gamification to the project....
 
-<img src="start-screen.png" alt="itnro" width="281" height="568"/>
+ <div class="row">
+  <div class="column">
+    <img src="start-screen.png" alt="start" style="width:100%" width="281" height="568">
+  </div>
+  <div class="column">
+    <img src="load-screen.png" alt="load" style="width:100%" width="281" height="568">
+  </div>
+  <div class="column">
+    <img src="process-screen.png" alt="process" style="width:100%" width="281" height="568">
+  </div>
+</div> 
 
 > The application was created using compileSdkVersion 29.
 > The targetSdkVersion is 29, but minSdkVersion 24.
