@@ -6,7 +6,7 @@ import com.example.mips_sim.model.RegisterFile;
 public class UserRuntime {
 
     private static Boolean isCorrect = false;
-    private static Integer status = 2; // << ----------------- FIX TO ZERO ON RELEASE
+    private static Integer status = 0; // << ----------------- FIX TO ZERO ON RELEASE
     private static Integer stageSelection = 0;
     private static Integer objective = 0;
     public static Boolean[] objectiveStatus;
