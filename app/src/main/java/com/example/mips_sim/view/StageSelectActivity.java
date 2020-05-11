@@ -28,6 +28,7 @@ public class StageSelectActivity  extends AppCompatActivity implements View.OnCl
         // TODO -> sharepref: UserRuntime.objectiveStatus, UserRuntime.hasHadIntro
 
         init();
+        checkUserState();
     }
 
     @Override
@@ -86,5 +87,14 @@ public class StageSelectActivity  extends AppCompatActivity implements View.OnCl
         toast = Toast.makeText(this, "Must complete prior challenges", Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         toast.show();
+    }
+
+    private void checkUserState() {
+
+        if (UserRuntime.objectiveStatus == null) {
+            UserRuntime.objectiveStatus = new Boolean[LoadActivity.TOTAL_OBJECTIVES];
+            for (int i = 0; i < LoadActivity.TOTAL_OBJECTIVES; ++i)
+                UserRuntime.objectiveStatus[i] = false;
+        }
     }
 }

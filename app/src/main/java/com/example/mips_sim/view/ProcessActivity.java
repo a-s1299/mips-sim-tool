@@ -49,7 +49,6 @@ public class ProcessActivity extends AppCompatActivity implements View.OnClickLi
     // User dependencies
     private UserRuntime user1;
     private Toast toast;
-    // here, i forgot why i put "here"
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +62,14 @@ public class ProcessActivity extends AppCompatActivity implements View.OnClickLi
         initComponents();
 
         safeLoad();
+    }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+
+        makeToast(user1.translateInstruction(extender));
     }
 
     @Override

@@ -91,7 +91,7 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
     private String instructionBinaryString;
     private String placeHolder;
     private Integer objectiveCounter = 0;
-    private static final Integer TOTAL_OBJECTIVES = 3;
+    protected static final Integer TOTAL_OBJECTIVES = 3;
     private final String INSTRUCTION_DEFAULT = "00000000-00000000-00000000-00000000";
 
 
@@ -100,7 +100,6 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.load_instruction);
 
-        checkUserState();
         init();
         setUserObjective(objectiveCounter);
     }
@@ -123,7 +122,6 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.previous_button:
                 setUserObjective( ((--objectiveCounter %TOTAL_OBJECTIVES)+TOTAL_OBJECTIVES)%TOTAL_OBJECTIVES );
-
                 break;
 
             case R.id.next_button:
@@ -265,15 +263,6 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
-    }
-
-    private void checkUserState() {
-
-        if (UserRuntime.objectiveStatus == null) {
-            UserRuntime.objectiveStatus = new Boolean[TOTAL_OBJECTIVES];
-            for (int i = 0; i < TOTAL_OBJECTIVES; ++i)
-                UserRuntime.objectiveStatus[i] = false;
-        }
     }
 
     private void init() {
@@ -474,8 +463,8 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
         if ( UserRuntime.objectiveStatus[((objectiveCounter %TOTAL_OBJECTIVES)+TOTAL_OBJECTIVES)%TOTAL_OBJECTIVES] ) {
             objectivePromptTxtView.setPaintFlags(objectivePromptTxtView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             preloadTxtView.setPaintFlags(preloadTxtView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        }
-        else {
+
+        } else {
             objectivePromptTxtView.setPaintFlags(objectivePromptTxtView.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
             preloadTxtView.setPaintFlags(preloadTxtView.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
         }

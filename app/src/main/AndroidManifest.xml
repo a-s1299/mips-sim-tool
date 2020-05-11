@@ -11,6 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".view.DemoActivity" android:screenOrientation="portrait" />
         <activity android:name=".view.LoadActivity" android:screenOrientation="portrait"/>
         <activity android:name=".view.ProcessActivity" android:screenOrientation="portrait"/>
         <activity android:name=".view.StageSelectActivity" android:screenOrientation="portrait"/>
