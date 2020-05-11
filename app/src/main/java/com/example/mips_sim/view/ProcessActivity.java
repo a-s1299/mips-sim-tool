@@ -1,5 +1,6 @@
 package com.example.mips_sim.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
@@ -55,17 +56,13 @@ public class ProcessActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.process_instruction);
 
+        checkIntro();
+
         initCPU();
         checkPreloadDirective();
         initComponents();
 
-        if (!processInstruction()) {
-            user1 = new UserRuntime();
-            makeToast(user1.translateInstruction(extender));
-
-        } else {
-
-        }
+        safeLoad();
     }
 
     @Override
@@ -314,5 +311,26 @@ public class ProcessActivity extends AppCompatActivity implements View.OnClickLi
     private Boolean checkObjectiveState() {
 
         return user1.checkObjectiveState(regFile, dataMem, UserRuntime.getObjective());
+    }
+
+    private void safeLoad() {
+
+        if (!processInstruction()) {
+            user1 = new UserRuntime();
+            makeToast(user1.translateInstruction(extender));
+
+        } else {
+
+        }
+    }
+
+    private void checkIntro() {
+
+        if (!UserRuntime.hasHadIntro) {
+
+            UserRuntime.hasHadIntro = true;
+            Intent intent = new Intent(this, DemoActivity.class);
+            startActivity(intent);
+        }
     }
 }

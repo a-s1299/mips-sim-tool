@@ -25,6 +25,8 @@ public class StageSelectActivity  extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stage_select);
 
+        // TODO -> sharepref: UserRuntime.objectiveStatus, UserRuntime.hasHadIntro
+
         init();
     }
 

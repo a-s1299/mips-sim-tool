@@ -10,6 +10,7 @@ public class UserRuntime {
     private static Integer stageSelection = 0;
     private static Integer objective = 0;
     public static Boolean[] objectiveStatus;
+    public static Boolean hasHadIntro = false;
 
     private Integer regDst;
     private Integer regWrite;
