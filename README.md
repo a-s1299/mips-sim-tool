@@ -1,5 +1,5 @@
 # mips-sim-tool
-> This android application was created as an assignment for a computer architecture class.
+> This Android application was created as an assignment for a computer architecture class.
 > It was designed to replicate the single-cycle data path of the MIPS architecture
 > and to aid in learning the control signals thereof.
 >
@@ -13,7 +13,10 @@
 
 # how to get started
 > With Android Studio you should have this application up and running in no time. The only default settings altered
-> were the minSdkVersion.  This was raised to 24 for reasons that escape me, but i can assure that is was important.
-> My Gradle settings are included in the package, so please double check your compatibility before building
-> (or just build and follow the recommended fix). If you are familiar with Android Studio, then these steps would come
-> as no surprise. If not, don't fret.  Android Studio will cover the steps needed that i have missed.
+> were the minSdkVersion.  This was raised to 24 for reasons that escape me, but i can assure that it was important.
+> My Gradle settings are included in the package, so please double check your version before building.
+>
+> The steps for getting the project up and running are very simple. As you can see below, just loading the project
+> in the order of the steps shown below resulted in an automatic build on my mobile workstation. 
+
+<img src="how-to-steps.png" alt="how-to">
