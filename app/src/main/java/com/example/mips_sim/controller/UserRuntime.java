@@ -84,6 +84,11 @@ public class UserRuntime {
         return status;
     }
 
+    public static void setStatus(Integer newStatus) {
+
+        status = newStatus;
+    }
+
     public static void levelUp() {
 
         ++status;

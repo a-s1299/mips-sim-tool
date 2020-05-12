@@ -1,6 +1,7 @@
 package com.example.mips_sim.view;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -14,10 +15,19 @@ import com.example.mips_sim.controller.UserRuntime;
 
 public class StageSelectActivity  extends AppCompatActivity implements View.OnClickListener {
 
-    private Button firstButton, secondButton, thirdButton;
+    private Button firstButton, secondButton, thirdButton, resetButton;
 
     private Intent intent;
     private Toast toast;
+
+    private static final String SHARED_PREFS = "sharedPrefs";
+    private static final String USER_STATUS = "status";
+    private static final String OBJECTIVE_STATUS = "objectiveStatus";
+    private static final String HAS_HAD_INTRO = "hasHadIntro";
+    private static final Integer DEFAULT_USER_STATUS = 0;
+    private static final Boolean DEFAULT_OBJ_STATUS = false;
+    private static final Boolean DEFAULT_INTRO = false;
+
 
 
     @Override
@@ -25,10 +35,23 @@ public class StageSelectActivity  extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stage_select);
 
-        // TODO -> sharepref: UserRuntime.objectiveStatus, UserRuntime.hasHadIntro
-
         init();
-        checkUserState();
+        checkUserStatus();
+        loadData();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        saveData();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        saveData();
     }
 
     @Override
@@ -37,7 +60,7 @@ public class StageSelectActivity  extends AppCompatActivity implements View.OnCl
         switch (v.getId()) {
             case R.id.challenge1_button:
                 UserRuntime.setStageSelection(0);
-                startProcessActivity(0);
+                startActivity(0);
                 break;
 
             case R.id.challenge2_button:
@@ -45,7 +68,7 @@ public class StageSelectActivity  extends AppCompatActivity implements View.OnCl
                 if (UserRuntime.getStageSelection() > UserRuntime.getStatus())
                     stockFailResponse();
                 else
-                    startProcessActivity(0);
+                    startActivity(0);
                 break;
 
             case R.id.challenge3_button:
@@ -53,9 +76,17 @@ public class StageSelectActivity  extends AppCompatActivity implements View.OnCl
                 if (UserRuntime.getStageSelection() > UserRuntime.getStatus())
                     stockFailResponse();
                 else
-                    startProcessActivity(1);
+                    startActivity(1);
+                break;
+
+            case R.id.reset_button:
+                UserRuntime.setStatus(0);
+                for (int i = 0; i < LoadActivity.TOTAL_OBJECTIVES; ++i)
+                    UserRuntime.objectiveStatus[i] = false;
+                UserRuntime.hasHadIntro = false;
                 break;
         }
+        saveData();
     }
 
     private void init() {
@@ -63,15 +94,18 @@ public class StageSelectActivity  extends AppCompatActivity implements View.OnCl
         firstButton = findViewById(R.id.challenge1_button);
         secondButton = findViewById(R.id.challenge2_button);
         thirdButton = findViewById(R.id.challenge3_button);
+        resetButton = findViewById(R.id.reset_button);
+
 
         firstButton.setOnClickListener(this);
         secondButton.setOnClickListener(this);
         thirdButton.setOnClickListener(this);
+        resetButton.setOnClickListener(this);
     }
 
-    private void startProcessActivity(Integer customEqualsOne) {
+    private void startActivity(Integer loadEqualsOne) {
 
-        switch (customEqualsOne) {
+        switch (loadEqualsOne) {
             case 0:
                 intent = new Intent(this, ProcessActivity.class);
                 break;
@@ -89,12 +123,35 @@ public class StageSelectActivity  extends AppCompatActivity implements View.OnCl
         toast.show();
     }
 
-    private void checkUserState() {
+    private void checkUserStatus() {
 
         if (UserRuntime.objectiveStatus == null) {
             UserRuntime.objectiveStatus = new Boolean[LoadActivity.TOTAL_OBJECTIVES];
             for (int i = 0; i < LoadActivity.TOTAL_OBJECTIVES; ++i)
                 UserRuntime.objectiveStatus[i] = false;
         }
+    }
+
+    private void saveData() {
+
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putInt(USER_STATUS, UserRuntime.getStatus());
+        for (Integer i = 0; i < UserRuntime.objectiveStatus.length; ++i)
+            editor.putBoolean(OBJECTIVE_STATUS + i.toString(), UserRuntime.objectiveStatus[i]);
+        editor.putBoolean(HAS_HAD_INTRO, UserRuntime.hasHadIntro);
+
+        editor.apply();
+    }
+
+    private void loadData() {
+
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+
+        UserRuntime.setStatus( sharedPreferences.getInt(USER_STATUS, DEFAULT_USER_STATUS) );
+        for (Integer i = 0; i < UserRuntime.objectiveStatus.length; ++i)
+            UserRuntime.objectiveStatus[i] = sharedPreferences.getBoolean(OBJECTIVE_STATUS + i.toString(), DEFAULT_OBJ_STATUS);
+        UserRuntime.hasHadIntro = sharedPreferences.getBoolean(HAS_HAD_INTRO, DEFAULT_INTRO);
     }
 }
