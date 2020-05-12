@@ -11,6 +11,7 @@ public class UserRuntime {
     private static Integer objective = 0;
     public static Boolean[] objectiveStatus;
     public static Boolean hasHadIntro = false;
+    private Integer helpIter;
 
     private Integer regDst;
     private Integer regWrite;
@@ -32,8 +33,22 @@ public class UserRuntime {
 
     private static String[] USER_INSTRUCTION_SET;
 
+    private String[] helpList = {
+            "I-format instruction?",
+            "Writing to the register file?",
+            "Reading from memory?",
+            "Writing to memory?",
+            "Branching?",
+            "Using an immediate value?",
+            "Value to the Register File?",
+            "Using rd?"
+    };
+
+
+
     public UserRuntime() {
 
+        helpIter = 0;
     }
 
     public static String[] getInstructionSet() {
@@ -232,6 +247,11 @@ public class UserRuntime {
         }
 
         return isEqual;
+    }
+
+    public String getHelp() {
+
+        return helpList[ (helpIter++)%helpList.length ];
     }
 
 }

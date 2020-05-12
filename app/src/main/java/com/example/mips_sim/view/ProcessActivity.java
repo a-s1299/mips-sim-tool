@@ -59,7 +59,7 @@ public class ProcessActivity extends AppCompatActivity implements View.OnClickLi
 
         initCPU();
         checkPreloadDirective();
-        initComponents();
+        initGUI();
 
         safeLoad();
     }
@@ -86,6 +86,10 @@ public class ProcessActivity extends AppCompatActivity implements View.OnClickLi
 
             case R.id.instrmem_button:
                 makeToast(user1.translateInstruction(extender));
+                break;
+
+            case R.id.controlunit_button:
+                makeToast(user1.getHelp());
                 break;
 
             case R.id.regfile_button:
@@ -260,7 +264,7 @@ public class ProcessActivity extends AppCompatActivity implements View.OnClickLi
         sl2.addDependency(extender);
     }
 
-    private void initComponents() {
+    private void initGUI() {
 
         backButton = findViewById(R.id.back_button);
         pcButton = findViewById(R.id.pc_button);
