@@ -22,7 +22,7 @@
 > My Gradle settings are included in the package, so please double check your version before building.
 >
 > The steps for getting the project up and running are very simple. As you can see below, just loading the project
-> in the order of the steps shown below resulted in an automatic build on my mobile workstation. 
+> in the order of these steps shown resulted in an automatic build on my mobile workstation. 
 
 <img src="how-to-steps.png" alt="how-to">
 
