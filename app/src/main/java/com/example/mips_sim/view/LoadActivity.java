@@ -453,6 +453,8 @@ public class LoadActivity extends AppCompatActivity implements View.OnClickListe
 
     private void makeToast(String toDisplay) {
 
+        if (toast != null)
+            toast.cancel();
         toast = Toast.makeText(this, toDisplay, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         toast.show();

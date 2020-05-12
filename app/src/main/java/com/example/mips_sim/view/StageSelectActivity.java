@@ -66,7 +66,7 @@ public class StageSelectActivity  extends AppCompatActivity implements View.OnCl
             case R.id.challenge2_button:
                 UserRuntime.setStageSelection(1);
                 if (UserRuntime.getStageSelection() > UserRuntime.getStatus())
-                    stockFailResponse();
+                    makeToast("Must complete prior challenges");
                 else
                     startActivity(0);
                 break;
@@ -74,12 +74,13 @@ public class StageSelectActivity  extends AppCompatActivity implements View.OnCl
             case R.id.challenge3_button:
                 UserRuntime.setStageSelection(2);
                 if (UserRuntime.getStageSelection() > UserRuntime.getStatus())
-                    stockFailResponse();
+                    makeToast("Must complete prior challenges");
                 else
                     startActivity(1);
                 break;
 
             case R.id.reset_button:
+                makeToast("Reset");
                 UserRuntime.setStatus(0);
                 for (int i = 0; i < LoadActivity.TOTAL_OBJECTIVES; ++i)
                     UserRuntime.objectiveStatus[i] = false;
@@ -117,8 +118,10 @@ public class StageSelectActivity  extends AppCompatActivity implements View.OnCl
         startActivity(intent);
     }
 
-    private void stockFailResponse() {
-        toast = Toast.makeText(this, "Must complete prior challenges", Toast.LENGTH_SHORT);
+    private void makeToast(String toDisplay) {
+        if (toast != null)
+            toast.cancel();
+        toast = Toast.makeText(this, toDisplay, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         toast.show();
     }
