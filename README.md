@@ -7,7 +7,7 @@
 
 <img src="screen-preview.png" alt="preview"  width="838" height="565">
 
-# how to play
+# how to use
 > The first couple challenges will quiz the users knowledge of which appropriate control signals
 > are needed for each intruction set.  Hints are made available by clicking the "Control Unit" button.
 > By completing preceeding challenges, the user can then move onto harder challenges. 
